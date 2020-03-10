@@ -1,0 +1,38 @@
+<?php 
+require 'config.php';
+?>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>AGE</th>
+        <th>SALARY</th>
+        <th>DELETE</th>
+    </tr>
+        <?php
+        
+        if (isset($_GET['del'])) {
+            $del = $_GET['del'];
+            $delete = "DELETE FROM ivanov WHERE id=$del";
+            mysqli_query($link, $delete);
+        }
+        
+        $query = "SELECT * FROM ivanov WHERE id>0";
+        $add = mysqli_query($link, $query);
+        for ($date=[]; $row = mysqli_fetch_assoc($add); $date[] = $row);
+        
+        $result = '';
+        foreach ($date as $elem) {
+            $result .= '<tr>';
+			
+			$result .= '<td>' . $elem['id'] . '</td>';
+			$result .= '<td>' . $elem['name'] . '</td>';
+			$result .= '<td>' . $elem['age'] . '</td>';
+			$result .= '<td>' . $elem['salary'] . '</td>';
+			$result .= '<td><a href="?del='.$elem['id'].'">Delete</a></td>';
+			
+			$result .= '</tr>';
+        }
+        echo $result;
+        ?>
+</table>
